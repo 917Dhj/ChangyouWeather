@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--第一个图层：背景，颜色：白色-->
+    <item android:id="@android:id/background">
+
+        <shape>
+            <corners android:radius="40dp" />
+            <solid android:color="@color/white"/>
+        </shape>
+
+    </item>
+
+    <!--第二个图层：左进度条；背景：黑色，clip：裁剪进度条右侧部分-->
+    <item android:id="@android:id/progress">
+
+        <clip>
+            <shape>
+                <corners android:radius="40dp" />
+                <solid android:color="@color/black_8"/>
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>

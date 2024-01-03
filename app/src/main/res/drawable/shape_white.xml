@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="40dp" />
+    <solid android:color="#FFFFFF" />
+</shape>
+<!--
+定义一个白色的圆角矩阵
+<corners>元素定义了圆角的半径
+<solid>元素定义了形状的颜色
+-->
