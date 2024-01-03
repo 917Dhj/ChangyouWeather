@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/blue"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+
+    <!--地图-->
+    <com.amap.api.maps.MapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingTop="9dp"
+            android:paddingEnd="8dp">
+
+
+
+            <TextView
+                android:id="@+id/choose_city"
+                android:layout_width="85dp"
+                android:layout_height="43dp"
+                android:background="@drawable/shape_fab_white"
+                android:clickable="true"
+                android:drawableRight="@drawable/arrow_drop_down"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:text="北京市"
+                android:textStyle="bold"
+                android:paddingStart="12dp"
+                android:singleLine="true"
+                android:textColor="@color/gray"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/search_edittext"
+                android:drawableLeft="@drawable/baseline_search_24"
+                android:drawablePadding="8dp"
+                android:hint="查找地点"
+                android:imeOptions="actionSearch"
+                android:paddingStart="14dp"
+                android:singleLine="true"
+                android:textColor="#000"
+                android:textSize="18sp" />
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+
+    <!--浮动按钮-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:clickable="true"
+        android:src="@drawable/my_location"
+        android:layout_marginTop="530sp"
+        android:layout_marginLeft="300sp"
+        android:visibility="gone"
+        app:backgroundTint="#FFF"
+        app:hoveredFocusedTranslationZ="18dp"
+        app:pressedTranslationZ="18dp" />
+
+    <!--天气数据布局-->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp">
+
+        <!--控制滑动的布局
+            behavior_hideable：代表是否可以隐藏，若为true则下滑时可以隐藏
+            behavior_peekHeight：代表滑动控件初始展示的高度
+            layout_marginTop：展开后距离顶部的高度-->
+        <RelativeLayout
+            android:id="@+id/bottom_sheet_ray"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="165dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            <!-- BottomSheetBehavior上滑 展开后主要滑动布局 上滑时会展示里面所有内容
+            下滑时当没有多余内容时会响应上层BottomSheetBehavior,从而达到整体收缩的效果。-->
+
+            <!--overScrollMode：控制在滚动内容时是否允许用户将内容滚动超过其原始边界-->
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:overScrollMode="never">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <!--渐变背景 -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        android:background="@drawable/shape_gradient_white" />
+                    <!--天气描述-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+                        <!--未来两小时降水情况-->
+                        <TextView
+                            android:id="@+id/summary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:padding="12dp"
+                            android:gravity="center_vertical"
+                            android:drawableLeft="@drawable/humidity"
+                            android:drawablePadding="12dp"
+                            android:paddingStart="12dp"
+                            android:text="降水情况"
+                            android:fontFamily="@font/msyhbd"
+                            android:textSize="14dp"
+                            android:textColor="@color/black_8"/>
+                        <!--分割线-->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/line"/>
+                        <!--今日详情-->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="12dp"
+                            android:text="今日详情"
+                            android:fontFamily="@font/msyhbd"
+                            android:textColor="@color/black_8"
+                            android:textSize="18dp" />
+                        <!--今日天气详情数据列表-->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_today_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:overScrollMode="never"
+                            android:paddingLeft="12dp"
+                            android:paddingRight="12dp"
+                            android:scrollbars="none" />
+                        <!--点分割线-->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginRight="12dp"
+                            android:background="@drawable/shape_dash_line" />
+                        <!--未来预报-->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="12dp"
+                            android:text="未来预报"
+                            android:fontFamily="@font/msyhbd"
+                            android:textColor="@color/black_8"
+                            android:textSize="18dp" />
+                        <!--未来七天天气预报-->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_seven_day_daily"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="12dp"
+                            android:paddingRight="12dp" />
+                        <!---分割线-->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/line"/>
+                        <!--功能跳转-->
+                        <!--生活建议-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:padding="12dp"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="right">
+                            <TextView
+                                android:id="@+id/tv3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:text="查看生活建议"
+                                android:fontFamily="@font/msyhbd"
+                                android:textSize="14dp"
+                                android:textColor="@color/black_8"/>
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:background="@drawable/icon_arrow"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <!--因为父布局是相对布局，则这个布局会在NestedScrollView的上方
+            这个布局的主要作用是用于显示基本的天气信息数据-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="15dp"
+                android:background="@drawable/shape_blue"
+                android:orientation="vertical">
+                <!--城市-->
+                <TextView
+                    android:id="@+id/tv_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="城市"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/msyhbd"
+                    android:textColor="@color/white"/>
+                <!--主要天气数据-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:orientation="horizontal">
+                    <!--温度-->
+                    <TextView
+                        android:id="@+id/tv_temperature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="0°"
+                        android:textColor="@color/white"
+                        android:textSize="60dp" />
+                    <!--实况天气-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="30dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+                        <!--天气状态-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+                            <!--天气状态的文字描述-->
+                            <TextView
+                                android:id="@+id/tv_weather_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="天气状态"
+                                android:textColor="@color/white"
+                                android:textSize="16dp" />
+                            <!--天气状况图片描述-->
+                            <ImageView
+                                android:id="@+id/iv_weather"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="12dp" />
+                        </LinearLayout>
+                        <!--空气质量、风力-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+                            <!--风向风力-->
+                            <TextView
+                                android:id="@+id/tv_wind"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/shape_orange"
+                                android:padding="5dp"
+                                android:text="风向风力"
+                                android:textColor="@color/orange"
+                                android:textSize="14dp" />
+                            <!--体感温度-->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="30dp"
+                                android:text="体感"
+                                android:textColor="@color/white"
+                                android:textSize="14dp" />
+                            <TextView
+                                android:id="@+id/tv_feelslike"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:text=" "
+                                android:textColor="@color/white"
+                                android:textSize="14dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <!--更多天气实况-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp">
+                    <!--相对湿度-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="湿度"
+                            android:textColor="@color/white"
+                            android:textSize="13dp"/>
+                        <TextView
+                            android:id="@+id/tv_humidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text=" "
+                            android:textColor="@color/white"
+                            android:textSize="13dp"/>
+                    </LinearLayout>
+                    <!--大气压强-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="气压"
+                            android:textColor="@color/white"
+                            android:textSize="13dp"/>
+                        <TextView
+                            android:id="@+id/tv_pressure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text=" "
+                            android:textColor="@color/white"
+                            android:textSize="13dp"/>
+                    </LinearLayout>
+                    <!--能见度-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="能见度"
+                            android:textColor="@color/white"
+                            android:textSize="13dp" />
+
+                        <TextView
+                            android:id="@+id/tv_vis"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text=" "
+                            android:textColor="@color/white"
+                            android:textSize="13dp" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</FrameLayout>
